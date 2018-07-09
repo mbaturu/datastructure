@@ -10,18 +10,18 @@ struct Point{
   float x,y;
 };
 
-float D_T(float,float,float);
+float D_T(struct Point,struct Point,struct Point);
 
 int main(int argc,char** argv){
 
-  if(argc!=4){
-    printf("need four commend argument\n");
+  if(argc!=5){
+    printf("need four command arguments\n");
     exit(0);
   }
-
-  Point pts[4];
-  for(int i=0;i<4;i++){
-    sscanf(argv[i],"%d,%d",&pts[i].x,&pts[i].y);
+  //error was made here, the first argument is not what we want
+  struct Point pts[4];
+  for(int i=1;i<5;i++){
+    sscanf(argv[i],"%f,%f",&pts[i-1].x,&pts[i-1].y);
   }
 
   float d1,d2,d3,d4;
@@ -30,23 +30,31 @@ int main(int argc,char** argv){
   d3=D_T(pts[1],pts[2],pts[3]);
   d4=D_T(pts[0],pts[2],pts[3]);
 
+  printf("%lf\n",d1);
+  printf("%lf\n",d2);
+  printf("%lf\n",d3);
+  printf("%lf\n",d4);
+
+
+  
   int result=(int)(d1-d2-d3-d4);
   if(!result){
     printf("the point is in the triangle.\n");
   }
   else{
-    printf("the point is not ine trigle.\n");
+    printf("the point is not in the tringle.\n");
   }
 
+  printf("%d\n",result);
   return 0;
 }
 
-float D_T(Point a,Point b,Point c){
-  Point ba, ca;
+float D_T(struct Point a,struct Point b,struct Point c){
+  struct Point ba, ca;
   ba.x=b.x-a.x;
-  ba.y=b.y-a.x;
+  ba.y=b.y-a.y;
   ca.x=c.x-a.x;
-  ca.y=c.y-a.x;
+  ca.y=c.y-a.y;
   
   return (abs(ba.x*ca.y-ba.y*ca.x)/2.0f);
 }
