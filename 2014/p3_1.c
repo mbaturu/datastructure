@@ -7,6 +7,8 @@ char a[100],b[100],result[100];
 void Multiply(char*,char*,char*);
 void Reverse_two(char*,char*);
 void Reverse_one(char*);
+void Stoi(char*);
+void Itos(char*);
 
 int main(int argc,char** argv){
 	if(argc!=3){
@@ -15,10 +17,12 @@ int main(int argc,char** argv){
 	}
 	Reverse_two(argv[1],a);
 	Reverse_two(argv[2],b);
-
+	Stoi(a);
+	Stoi(b);
 	Multiply(a,b,result);
 	Reverse_one(result);
-	printf("the result is: %s",result);
+	Itos(result);
+	printf("the result is: %s\n",result);
 	return 0;
 }
 //add the test for 100 digits
@@ -94,7 +98,19 @@ void Reverse_one(char* a){
 	}
 }
 
+void Stoi(char* a){
+	int len=strlen(a);
+	for(int i=0;i<len;i++){
+		a[i]=a[i]-0x30;
+	}
+}
 
+void Itos(char* a){
+	int len=strlen(a);
+	for(int i=0;i<len;i++){
+		a[i]=a[i]+0x30;
+	}
+}
 
 
 
