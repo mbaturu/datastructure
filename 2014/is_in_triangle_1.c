@@ -1,6 +1,8 @@
 /*
   calculate the dimensions of the triangle and judge if the a point 
   is in the internal area of the triangle
+
+  									by mbaturu
  */
 #include <stdlib.h>
 #include <stdio.h>

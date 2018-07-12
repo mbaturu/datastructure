@@ -1,5 +1,5 @@
 /*
-	This program aims to prove that any positive eveninteger bigger than
+	This program aims to prove that any positive even integer bigger than
 	2 can be the sum of two prime numbers.
 							by mBaturu
 							2018/7/6
