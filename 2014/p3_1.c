@@ -1,14 +1,30 @@
+/*
+*	Multiply two numbers using arrays.
+*
+*
+*	you'd better store all the index in form of length.
+*
+*
+*
+*						by mBaturu
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-char a[100],b[100],result[100];
 
+//global variables
+char a[100],b[100],result[100];
+int result_len_index;
+
+//prototype
 void Multiply(char*,char*,char*);
 void Reverse_two(char*,char*);
 void Reverse_one(char*);
+void Reverse_len_index(char*,int);
 void Stoi(char*);
-void Itos(char*);
+void Itos(char*,int);
 
 int main(int argc,char** argv){
 	if(argc!=3){
@@ -20,64 +36,35 @@ int main(int argc,char** argv){
 	Stoi(a);
 	Stoi(b);
 	Multiply(a,b,result);
-	Reverse_one(result);
-	Itos(result);
+	Reverse_len_index(result,result_len_index);
+	Itos(result,result_len_index);
 	printf("the result is: %s\n",result);
 	return 0;
 }
+
 //add the test for 100 digits
 void Multiply(char* a,char* b,char* result){
-	int length_a=strlen(a);
+	int length_a=strlen(a);//how come it is 10001? it doesn't matter.
 	int length_b=strlen(b);
-	int ir_max=length_a>=length_b?length_b:length_a-1;
+	//int ir_max=(length_a>=length_b?length_b:length_a);
+	//if you strlen on pure numbers and then you encounter 0, you may get the wrong length
+	//so you need to recored the length of the string.
 
-	for(int i=0;i<ir_max;i++){
-		char temp=a[i]*b[i];
-		if(temp>9){
-			result[i+1]=temp-temp%10;
-			result[i]+=temp%10;
-			if(result[i]>9){
-				result[i+1]+=result[i]-result[i]%10;
-				result[i]=result[i]%10;
-			}	  	 
-		}else{
-			result[i]+=a[i]*b[i];
-			if(result[i]>9){
-				result[i+1]+=result[i]-result[i]%10;
-				result[i]=result[i]%10;
+	for(int j=0;j<length_b;j++){
+		for(int i=0;i<length_a;i++){
+			//3*6=0x22
+			result[i+j]+=a[i]*b[j];
+			int k=0;
+			while(result[i+j+k]!=0){
+				if(result[i+j+k]>9){
+					result[i+j+k+1]+=result[i+j+k]/10;
+					result[i+j+k]=result[i+j+k]%10;
+				} 
+				k++;
 			}
-		} 
-	}
-	if(length_a==length_b){
-		return;
-	}
-	if(length_a>length_b){
-		char ir_max_2=length_a-1-ir_max;
-		for(int i=ir_max+1;i<length_a;i++){
-			char temp=result[i]+a[i];
-			if(temp>9){
-				result[i+1]=temp-temp%10;
-				result[i]=temp%10;
-			}
-			else{
-				result[i]=temp;
-			}
+			result_len_index=i+j+k-1;
 		}
 	}
-	if(length_a<length_b){
-		char ir_max_2=length_b-ir_max;
-		for(int i=ir_max+1;i<length_b;i++){
-			char temp=result[i]+b[i];
-			if(temp>9){
-				result[i+1]=temp-temp%10;
-				result[i]=temp%10;
-			}
-			else{
-				result[i]=temp;
-			}
-		}
-	}
-
 }
 
 void Reverse_two(char* orig,char* dest){
@@ -98,6 +85,15 @@ void Reverse_one(char* a){
 	}
 }
 
+void Reverse_len_index(char* a,int len_index){
+	char temp;
+	for(int i=0;i<=len_index/2;i++){
+		temp=a[i];
+		a[i]=a[len_index-i];
+		a[len_index-i]=temp;
+	}
+}
+
 void Stoi(char* a){
 	int len=strlen(a);
 	for(int i=0;i<len;i++){
@@ -105,13 +101,13 @@ void Stoi(char* a){
 	}
 }
 
-void Itos(char* a){
-	int len=strlen(a);
-	for(int i=0;i<len;i++){
+void Itos(char* a,int len_index){
+	//could be zero, len should not be used
+	//int len=strlen(a);
+	for(int i=0;i<=len_index;i++){
 		a[i]=a[i]+0x30;
 	}
 }
-
 
 
 
