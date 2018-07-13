@@ -47,6 +47,7 @@ int main(int argc,char** argv){
 		p[i].y=rand();
 	}
 	FILE* fp=fopen("2D_coordinates","w+");
+	fprintf(fp,"%d\n",count);
 	for(int i=0;i<count;i++){
 		fprintf(fp,"(%d,%d)\n",p[i].x,p[i].y);
 	}
