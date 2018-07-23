@@ -1,9 +1,11 @@
 /*
 *	2D coordinates random generator.
+*	
 *
-*
-*
-*            Protected by the GPL.
+*	you could make it included as two functions:
+*	the first is generate values, and the second is
+*	read values, thru the header file as the interface
+*            Protected by the GPL3.
 *						by mbaturu
 */
 #include <stdlib.h>

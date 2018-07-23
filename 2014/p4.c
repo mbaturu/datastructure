@@ -2,9 +2,9 @@
 *	This program specifies the largest triangle among the triangles
 *	formed by input coordinates.
 *
-*
-*
-*
+*	
+*	you should take care of the integer overflow by using double.
+*	and avoid floating poing overflow
 *										by mbaturu
 */
 
@@ -14,11 +14,12 @@
 struct Point{
 	int x;
 	int y;
-}
+};
 
 double Triangle_Dimension(struct Point,struct Point,struct Point);
+int Is_Triangle(struct Point,struct Point,struct Point);
 
-int main(int argc,char* argv){
+int main(int argc,char** argv){
 	if(argc!=2){
 		printf("need to sepcify the data file.\n");
 	}
@@ -28,36 +29,59 @@ int main(int argc,char* argv){
 	fscanf(fp,"%d\n",&count);
 	struct Point* p=(struct Point*)malloc(sizeof(struct Point)*count);
 	for(int i=0;i<count;i++){
-		fscanf(fp,"(%d,%d)",&p[i].x,&p[i].y);
+		fscanf(fp,"(%d,%d)\n",&p[i].x,&p[i].y);
 	}
 	fclose(fp);
-	double max=0;
+	double max=0.0;
 	//search for the largest triangle:
 	for(int i=0;i<count;i++){
 		for(int j=i+1;j<count;j++){
-			for(int k=j+1;k<count;k+=){
-				double temp;
-				if((temp=Triangle_Dimension(p[i],p[j],p[k]))>max){
+			for(int k=j+1;k<count;k++){
+				double temp=Triangle_Dimension(p[i],p[j],p[k]);
+				if(temp>=0.0&&temp>max){
 					max=temp;
 					printf("now the max area is: %.2lf\n",max);
 				}
 			}
 		}
 	}
-	printf("The biggest max is %.2lf\n",max);
+	printf("The biggest triangle is %.2lf\n",max);
 	return(0);
 }
 
-double Triangle_Dimension(struct point a,struct Point b,struct Point c){
+double Triangle_Dimension(struct Point a,struct Point b,struct Point c){
+	if(Is_Triangle(a,b,c)==0){
+		return(-1.0);
+	}
+	//dot product
+
 	struct Point ba={b.x-a.x,b.y-a.y};
 	struct Point ca={c.x-a.x,c.y-a.y};
-	double area=(abs(ba.x*ca.y-ba.y*ca.x)/2.0f);
+	
+	double area=(abs(ba.x*ca.y-ba.y*ca.x)/2.0);
 	return(area);
 }
-	
 
-
-
-
-
+//any errors should be considered?
+int Is_Triangle(struct Point a,struct Point b,struct Point c){
+	double k1,k2;
+	//there is a trap here,you should consider this when dividing
+	if((!(b.x-a.x))&&(!(c.x-a.x))){
+		return 0;
+	}
+	if(!(b.x-a.x)){
+		return 1;
+	}
+	if(!(c.x-a.x)){
+		return 1;
+	}
+	//othberwise there is gonna be floating point exception(core dumped)	
+	k1=(b.y-a.y)/(b.x-a.x);
+	k2=(c.y-a.y)/(c.x-a.x);
+	if(k1==k2){
+		return 0;
+	}else{
+		return 1;
+	}
+}
 
