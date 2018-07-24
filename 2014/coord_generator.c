@@ -19,9 +19,12 @@ struct Point{
 	int y;
 };
 
+int range=0;
+
 int main(int argc,char** argv){
-	if(argc!=2){
-		printf("format: coorg <number of coordinates> or input -h for help\n");
+	//switch(argc)
+	if(argc==1||argc>4){
+		printf("format: coorg <number of coordinates> [-r <range>] or input -h for help\n");
 		exit(0);
 	}
 	if(strcmp(argv[1],"-h")==0){
@@ -32,6 +35,16 @@ int main(int argc,char** argv){
 			"\n"
 			"\n"
 			"Format: coorg <number of coordinates> or input -h for help\n");
+	}
+	if(argc==3&&!strcmp(argv[2],"-r")){
+		printf("format: <number of coordinates> [-r <range]>\n");
+	}
+	if(argc==4&&!strcmp(argv[2],"-r")){
+		range=atoi(argv[3]);
+		if(range<=1){
+			printf("should not be less than or equal to 1.\n");
+			exit(0);
+		}
 	}
 	int len=strlen(argv[1]);
 	for(int i=0;i<len;i++){
@@ -45,8 +58,13 @@ int main(int argc,char** argv){
 	//the library doesn't have a double generator?
 	for(int i=0;i<count;i++){
 		srand((int)clock());
-		p[i].x=rand();
-		p[i].y=rand();
+		if(range>1){
+			p[i].x=rand()%range;
+			p[i].y=rand()%range;
+		}else{
+			p[i].x=rand();
+			p[i].y=rand();
+		}
 	}
 	FILE* fp=fopen("2D_coordinates","w+");
 	fprintf(fp,"%d\n",count);

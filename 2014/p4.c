@@ -16,6 +16,8 @@ struct Point{
 	int y;
 };
 
+long long number_processed;
+
 double Triangle_Dimension(struct Point,struct Point,struct Point);
 int Is_Triangle(struct Point,struct Point,struct Point);
 
@@ -38,9 +40,14 @@ int main(int argc,char** argv){
 		for(int j=i+1;j<count;j++){
 			for(int k=j+1;k<count;k++){
 				double temp=Triangle_Dimension(p[i],p[j],p[k]);
+				number_processed++;
+				if(number_processed%1000000000==0){
+					printf("already processed: %lld\n",number_processed);
+				}
 				if(temp>=0.0&&temp>max){
 					max=temp;
-					printf("now the max area is: %.2lf\n",max);
+					printf("now the max area is: %.2lf   ",max);
+					printf("the points are (%d,%d),(%d,%d),(%d,%d)\n",p[i].x,p[i].y,p[j].x,p[j].y,p[k].x,p[k].y);
 				}
 			}
 		}
